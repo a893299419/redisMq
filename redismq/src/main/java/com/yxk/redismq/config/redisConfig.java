@@ -4,7 +4,9 @@ import com.yxk.redismq.core.RedisListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -16,12 +18,15 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.integration.redis.util.RedisLockRegistry;
 import org.springframework.stereotype.Component;
 
-@Component
+@Configuration
+
 public class redisConfig {
     private static final Log logger = LogFactory.getLog(redisConfig.class);
 
-    @Autowired
-    RedisListener redisListener;
+    @Bean
+    public RedisListener redisListener(){
+        return new RedisListener();
+    }
     @Bean
     public RedisTemplate<String,Object> redisTemplate(RedisConnectionFactory factory){
         logger.debug("redis序列化开始");
@@ -41,7 +46,7 @@ public class redisConfig {
     public RedisMessageListenerContainer container(RedisConnectionFactory factory){
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(factory);
-        container.addMessageListener((MessageListener) redisListener,new PatternTopic("demo-channel"));
+        container.addMessageListener((MessageListener) redisListener(),new PatternTopic("demo-channel"));
         return container;
     }
 

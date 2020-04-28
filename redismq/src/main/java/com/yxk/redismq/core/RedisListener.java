@@ -7,6 +7,7 @@ package com.yxk.redismq.core;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.connection.Message;
+import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 
 
-@Component
+
 public class RedisListener implements MessageListener {
     private static final Logger LOGGER = LoggerFactory.getLogger(RedisListener.class);
 
